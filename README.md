@@ -5,6 +5,11 @@ Interface) protocol.
 
 Scripts
 -------
+The `curses_display` script opens a connection to an Asterisk server, sets up
+ChannelObserver and CallObservers that subscribe to events via an
+EventListener. The observers maintain lists of current Channels and Calls. A
+curses loop renders a pretty list of these Channels and Calls.
+
 `script/curses_display asterisk.example.com 5038 admin secret`
 
     ----------------------------------------------Channels----------------------------------------------
