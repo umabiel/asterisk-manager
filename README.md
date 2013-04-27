@@ -3,6 +3,60 @@ asterisk-manager
 Ruby Gem for connecting to an Asterisk server via the AMI (Asterisk Manager
 Interface) protocol.
 
+
+Events
+------
+Create a connection and login
+
+    connection = AsteriskManager::Connection.new host:     'asterisk.example.com',
+                                                 port:     5038,
+                                                 username: 'admin',
+                                                 password: 'secret'
+    connection.login
+
+Setup an EventListener
+
+    event_listener = EventListener.new connection: connection
+    event_listener.listen
+
+Setup a ChannelObserver and have it subscribe to events via the EventListener
+
+    channel_observer = ChannelObserver.new
+    channel_observer.subscribe event_listener
+
+Setup a CallObserver and have it subscribe to events via the EventListener
+
+    call_observer = CallObserver.new
+    call_observer.subscribe event_listener
+
+Now make a call and take a look
+
+    channel_observer.channels.inspect
+      {
+        "1367101866.1995" => #<AsteriskManager::Channel @unique_id="1367101866.1995",
+                                                        @sip_id="SIP/501-0000078b",
+                                                        @state="Up",
+                                                        @created_at=2013-04-27 15:31:07 -0700>,
+        "1367101866.1996" => #<AsteriskManager::Channel @unique_id="1367101866.1996",
+                                                        @sip_id="SIP/203-0000078c",
+                                                        @state="Up",
+                                                        @created_at=2013-04-27 15:31:07 -0700>
+      }
+
+    call_observer.calls.inspect
+      {
+        [ "1367101866.1995", "1367101866.1996" ] => #<AsteriskManager::Call
+          @channel_1=#<AsteriskManager::Channel @unique_id="1367101866.1995",
+                                                @sip_id="SIP/501-0000078b",
+                                                @state=nil,
+                                                @created_at=2013-04-27 15:31:07 -0700>,
+          @channel_2=#<AsteriskManager::Channel @unique_id="1367101866.1996",
+                                                @sip_id="SIP/203-0000078c",
+                                                @state=nil,
+                                                @created_at=2013-04-27 15:31:07 -0700>,
+          @created_at=2013-04-27 15:31:07 -0700>
+      }
+
 Scripts
 -------
 The `curses_display` script opens a connection to an Asterisk server, sets up
