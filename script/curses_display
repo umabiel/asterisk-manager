@@ -1,0 +1,62 @@
+#!/usr/bin/env ruby
+require 'curses'
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'asterisk-manager'))
+include AsteriskManager
+
+connection = Connection.new host:     ARGV[0],
+                            port:     ARGV[1],
+                            username: ARGV[2],
+                            password: ARGV[3]
+connection.login
+
+event_listener = EventListener.new connection: connection
+event_listener.listen
+
+channel_observer = ChannelObserver.new
+channel_observer.subscribe event_listener
+
+call_observer = CallObserver.new
+call_observer.subscribe event_listener
+
+Curses.init_screen
+loop do
+  # Channels
+  width   = 100
+  columns = 4
+  channels  = []
+  channels << [ 'Unique ID', 'SIP ID', 'State', 'Age' ]
+  channels << [ '-' * width ]
+  channel_observer.channels.values.each do |channel|
+    channels << [ channel.unique_id, channel.sip_id, channel.state, channel.age ]
+  end
+  channels.collect! do |line|
+    line.collect! do |column|
+      column.to_s.rjust(width / columns)
+    end
+    line.join
+  end
+  channels = [ 'Channels'.center(width, '-') ] + channels
+  
+  # Calls
+  width   = 100
+  columns = 5
+  calls  = []
+  calls << [ 'Channel 1 Unique ID', 'Channel 1 SIP ID', 'Channel 2 Unique ID', 'Channel 2 SIP ID', 'Age' ]
+  calls << [ '-' * width ]
+  call_observer.calls.values.each do |call|
+    calls << [ call.channel_1.unique_id, call.channel_1.sip_id, call.channel_2.unique_id, call.channel_2.sip_id, call.age ]
+  end
+  calls.collect! do |line|
+    line.collect! do |column|
+      column.to_s.rjust(width / columns)
+    end
+    line.join
+  end
+  calls = [ 'Calls'.center(width, '-') ] + calls
+  
+  Curses.clear
+  Curses.noecho
+  Curses.addstr((channels + calls).join("\n"))
+  Curses.refresh
+  sleep 0.1
+end

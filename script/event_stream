@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'asterisk-manager'))
+include AsteriskManager
+
+connection = Connection.new host:     ARGV[0],
+                            port:     ARGV[1],
+                            username: ARGV[2],
+                            password: ARGV[3]
+connection.login
+
+event_listener = EventListener.new connection: connection
+event_listener.listen
+
+class SimpleObserver
+  def receive_event(event)
+    puts event.attributes.inspect
+  end
+end
+
+event_listener.subscribe SimpleObserver.new, 'Newchannel', 'Newstate', 'Hangup', 'Bridge', 'Unlink'
+
+channel_observer = ChannelObserver.new
+channel_observer.subscribe event_listener
+
+call_observer = CallObserver.new
+call_observer.subscribe event_listener
+
+loop do
+  puts channel_observer.channels.inspect
+  puts call_observer.calls.inspect
+  sleep 1
+end
