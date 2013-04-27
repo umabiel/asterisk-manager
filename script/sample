@@ -1,0 +1,40 @@
+#!/usr/bin/env ruby
+require 'curses'
+require File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib', 'asterisk-manager'))
+include AsteriskManager
+
+connection = Connection.new host:     ARGV[0],
+                            port:     ARGV[1],
+                            username: ARGV[2],
+                            password: ARGV[3]
+connection.login
+
+event_listener = EventListener.new connection: connection
+event_listener.listen
+
+channel_observer = ChannelObserver.new
+channel_observer.subscribe event_listener
+
+Curses.init_screen
+loop do
+  width   = 80
+  columns = 4
+  lines  = []
+  lines << [ 'Unique ID', 'SIP ID', 'State', 'Age' ]
+  lines << [ '-' * width ]
+  channel_observer.channels.values.each do |channel|
+    lines << [ channel.unique_id, channel.sip_id, channel.state, channel.age ]
+  end
+  lines.collect! do |line|
+    line.collect! do |column|
+      column.to_s.rjust(width / columns)
+    end
+    line.join
+  end
+  lines = [ 'Channels'.center(width, '-') ] + lines
+  Curses.clear
+  Curses.noecho
+  Curses.addstr lines.join("\n")
+  Curses.refresh
+  sleep 0.1
+end

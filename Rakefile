@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "asterisk-manager"
   gem.homepage = "http://github.com/jwulff/asterisk-manager"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Ruby Gem for connecting to an Asterisk server via the AMI (Asterisk Manager Interface) protocol."
+  gem.description = "Ruby Gem for connecting to an Asterisk server via the AMI (Asterisk Manager Interface) protocol."
   gem.email = "johnw@orcasnet.com"
   gem.authors = ["John Wulff"]
   # dependencies defined in Gemfile
