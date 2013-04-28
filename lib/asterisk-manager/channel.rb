@@ -16,6 +16,10 @@ module AsteriskManager
       Time.now - created_at
     end
 
+    def <=>(other_channel)
+      unique_id.to_f <=> other_channel.unique_id.to_f
+    end
+
     def self.channels
       @channels ||= {}
     end
