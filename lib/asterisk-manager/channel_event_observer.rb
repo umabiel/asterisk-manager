@@ -1,5 +1,5 @@
 module AsteriskManager
-  class ChannelObserver
+  class ChannelEventObserver
     def subscribe(event_listener)
       event_listener.subscribe self, 'Newchannel', 'Newstate', 'Hangup'
     end

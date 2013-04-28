@@ -12,11 +12,12 @@ connection.login
 event_listener = EventListener.new connection: connection
 event_listener.listen
 
-channel_observer = ChannelObserver.new
-channel_observer.subscribe event_listener
 
-call_observer = CallObserver.new
-call_observer.subscribe event_listener
+channel_event_observer = ChannelEventObserver.new
+channel_event_observer.subscribe event_listener
+
+call_event_observer = CallEventObserver.new
+call_event_observer.subscribe event_listener
 
 Curses.init_screen
 loop do

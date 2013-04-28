@@ -1,5 +1,5 @@
 module AsteriskManager
-  class CallObserver
+  class CallEventObserver
     def subscribe(event_listener)
       event_listener.subscribe self, 'Bridge', 'Unlink'
     end
