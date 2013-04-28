@@ -10,8 +10,16 @@ module AsteriskManager
       self.created_at = Time.now
     end
 
-    def age
+    def seconds
       Time.now - created_at
+    end
+
+    def duration
+      x = seconds.round
+      hours   = x / 3600
+      minutes = (x - hours * 3600) / 60
+      seconds = (x - hours * 3600 - minutes * 60)
+      "#{hours}:#{'%02d' % minutes}:#{'%02d' % seconds}"
     end
 
     def self.calls

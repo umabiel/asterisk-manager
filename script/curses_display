@@ -28,10 +28,10 @@ loop do
   width   = 160
   columns = 5
   channels  = []
-  channels << [ 'Unique ID', 'SIP ID', 'State', 'Caller ID', 'Age' ]
+  channels << [ 'Unique ID', 'SIP ID', 'State', 'Caller ID', 'Duration' ]
   channels << [ '-' * width ]
   Channel.channels.values.each do |channel|
-    channels << [ channel.unique_id, channel.sip_id, channel.state, channel.caller_id, channel.age.round ]
+    channels << [ channel.unique_id, channel.sip_id, channel.state, channel.caller_id, channel.duration ]
   end
   channels.collect! do |line|
     line.collect! do |column|
@@ -45,10 +45,10 @@ loop do
   width   = 160
   columns = 5
   calls  = []
-  calls << [ 'Channel 1 Unique ID', 'Channel 1 SIP ID', 'Channel 2 Unique ID', 'Channel 2 SIP ID', 'Age' ]
+  calls << [ 'Channel 1 Unique ID', 'Channel 1 SIP ID', 'Channel 2 Unique ID', 'Channel 2 SIP ID', 'Duration' ]
   calls << [ '-' * width ]
   Call.calls.values.each do |call|
-    calls << [ call.channel_1.unique_id, call.channel_1.sip_id, call.channel_2.unique_id, call.channel_2.sip_id, call.age.round ]
+    calls << [ call.channel_1.unique_id, call.channel_1.sip_id, call.channel_2.unique_id, call.channel_2.sip_id, call.duration ]
   end
   calls.collect! do |line|
     line.collect! do |column|
