@@ -12,6 +12,7 @@ module AsteriskManager
       self.port     = arguments[:port]
       self.username = arguments[:username]
       self.password = arguments[:password]
+      login
     end
 
     def socket
@@ -20,6 +21,16 @@ module AsteriskManager
 
     def send(value)
       socket.write value
+    end
+
+    def read_line
+      if !@socket || (response = socket.gets).nil?
+        @socket = nil
+        login
+        read_line
+      else
+        response
+      end
     end
 
     def login

@@ -7,7 +7,6 @@ connection = Connection.new host:     ARGV[0],
                             port:     ARGV[1],
                             username: ARGV[2],
                             password: ARGV[3]
-connection.login
 
 event_listener = EventListener.new connection: connection
 event_listener.listen

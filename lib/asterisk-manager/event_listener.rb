@@ -36,7 +36,7 @@ module AsteriskManager
       self.listen_thread = Thread.new do
         event_attributes = {}
         loop do
-          line = connection.socket.gets
+          line = connection.read_line
           if line == "\r\n"
             notify_subscribers Event.new(event_attributes)
             event_attributes = {}

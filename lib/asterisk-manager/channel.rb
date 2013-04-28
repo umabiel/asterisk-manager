@@ -21,7 +21,7 @@ module AsteriskManager
     end
 
     def application
-      "#{application_name}(#{application_data})" if application_name.size > 0
+      "#{application_name}(#{application_data})" if application_name.to_s.size > 0
     end
 
     def caller_id
