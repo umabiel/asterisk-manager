@@ -5,6 +5,8 @@ module AsteriskManager
                   :state,
                   :caller_id_number,
                   :caller_id_name,
+                  :application_name,
+                  :application_data,
                   :created_at
     
     def initialize(arguments = {})
@@ -13,7 +15,13 @@ module AsteriskManager
       self.state            = arguments[:state]
       self.caller_id_number = arguments[:caller_id_number]
       self.caller_id_name   = arguments[:caller_id_name]
+      self.application_name = arguments[:application_name]
+      self.application_data = arguments[:application_data]
       self.created_at       = Time.now
+    end
+
+    def application
+      "#{application_name}(#{application_data})" if application_name.size > 0
     end
 
     def caller_id

@@ -23,6 +23,8 @@ module AsteriskManager
       channel.sip_id           = event['Channel']
       channel.state            = event['ChannelStateDesc']
       channel.caller_id_number = event['CallerIDnum']
+      channel.application_name = event['Application']
+      channel.application_data = event['ApplicationData']
       duration_pieces          = event['Duration'].split(':')
       duration                 = duration_pieces[0].to_i * 3600 + duration_pieces[1].to_i * 60 + duration_pieces[2].to_i
       channel.created_at       = Time.now - duration

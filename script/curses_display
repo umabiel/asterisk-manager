@@ -24,14 +24,15 @@ call_event_observer.subscribe event_listener
 
 Curses.init_screen
 loop do
+  lines = []
   # Channels
-  width   = 160
-  columns = 5
+  width   = 180
+  columns = 6
   channels  = []
-  channels << [ 'Unique ID', 'SIP ID', 'State', 'Caller ID', 'Duration' ]
+  channels << [ 'Unique ID', 'SIP ID', 'State', 'Caller ID', 'Application', 'Duration' ]
   channels << [ '-' * width ]
   Channel.channels.values.each do |channel|
-    channels << [ channel.unique_id, channel.sip_id, channel.state, channel.caller_id, channel.duration ]
+    channels << [ channel.unique_id, channel.sip_id, channel.state, channel.caller_id, channel.application, channel.duration ]
   end
   channels.collect! do |line|
     line.collect! do |column|
@@ -39,10 +40,10 @@ loop do
     end
     line.join
   end
-  channels = [ 'Channels'.center(width, '-') ] + channels
-  
+  lines += [ 'Channels'.center(width, '-') ] + channels
+
   # Calls
-  width   = 160
+  width   = 180
   columns = 5
   calls  = []
   calls << [ 'Channel 1 Unique ID', 'Channel 1 SIP ID', 'Channel 2 Unique ID', 'Channel 2 SIP ID', 'Duration' ]
@@ -56,11 +57,28 @@ loop do
     end
     line.join
   end
-  calls = [ 'Calls'.center(width, '-') ] + calls
-  
+  lines += [ 'Calls'.center(width, '-') ] + calls
+
+  # Conferences
+  width   = 180
+  columns = 2
+  conferences  = []
+  conferences << [ 'Name', 'Members' ]
+  conferences << [ '-' * width ]
+  Conference.conferences.values.each do |conference|
+    conferences << [ conference.name, conference.channels.collect(&:caller_id_number) ]
+  end
+  conferences.collect! do |line|
+    line.collect! do |column|
+      column.to_s.rjust(width / columns)
+    end
+    line.join
+  end
+  lines += [ 'Conferences'.center(width, '-') ] + conferences
+
   Curses.clear
   Curses.noecho
-  Curses.addstr((channels + calls).join("\n"))
+  Curses.addstr(lines.join("\n"))
   Curses.refresh
   sleep 0.1
 end
