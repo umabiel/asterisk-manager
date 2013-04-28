@@ -26,12 +26,12 @@ Curses.init_screen
 loop do
   # Channels
   width   = 160
-  columns = 4
+  columns = 5
   channels  = []
-  channels << [ 'Unique ID', 'SIP ID', 'State', 'Age' ]
+  channels << [ 'Unique ID', 'SIP ID', 'State', 'Caller ID', 'Age' ]
   channels << [ '-' * width ]
   Channel.channels.values.each do |channel|
-    channels << [ channel.unique_id, channel.sip_id, channel.state, channel.age.round ]
+    channels << [ channel.unique_id, channel.sip_id, channel.state, channel.caller_id, channel.age.round ]
   end
   channels.collect! do |line|
     line.collect! do |column|

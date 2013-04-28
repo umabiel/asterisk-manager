@@ -19,12 +19,13 @@ module AsteriskManager
     end
 
     def core_show_channel(event)
-      channel         = Channel.for_unique_id(event['UniqueID'])
-      channel.sip_id  = event['Channel']
-      channel.state   = event['ChannelStateDesc']
-      duration_pieces = event['Duration'].split(':')
-      duration        = duration_pieces[0].to_i * 3600 + duration_pieces[1].to_i * 60 + duration_pieces[2].to_i
-      channel.created_at = Time.now - duration
+      channel                  = Channel.for_unique_id(event['UniqueID'])
+      channel.sip_id           = event['Channel']
+      channel.state            = event['ChannelStateDesc']
+      channel.caller_id_number = event['CallerIDnum']
+      duration_pieces          = event['Duration'].split(':')
+      duration                 = duration_pieces[0].to_i * 3600 + duration_pieces[1].to_i * 60 + duration_pieces[2].to_i
+      channel.created_at       = Time.now - duration
       if event['BridgedUniqueID'] != ''
         bridged_channel        = Channel.for_unique_id(event['BridgedUniqueID'])
         bridged_channel.sip_id = event['BridgedChannel']

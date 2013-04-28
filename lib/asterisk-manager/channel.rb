@@ -3,13 +3,21 @@ module AsteriskManager
     attr_accessor :unique_id,
                   :sip_id,
                   :state,
+                  :caller_id_number,
+                  :caller_id_name,
                   :created_at
     
     def initialize(arguments = {})
-      self.unique_id  = arguments[:unique_id]
-      self.sip_id     = arguments[:sip_id]
-      self.state      = arguments[:state]
-      self.created_at = Time.now
+      self.unique_id        = arguments[:unique_id]
+      self.sip_id           = arguments[:sip_id]
+      self.state            = arguments[:state]
+      self.caller_id_number = arguments[:caller_id_number]
+      self.caller_id_name   = arguments[:caller_id_name]
+      self.created_at       = Time.now
+    end
+
+    def caller_id
+      "#{caller_id_number} #{caller_id_name}".strip
     end
 
     def age
