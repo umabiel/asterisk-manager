@@ -59,8 +59,8 @@ Now make a call and take a look
 
 Scripts
 -------
-The `curses_display` script opens a connection to an Asterisk server, sets up
-ChannelObserver and CallObservers that subscribe to events via an
+The `curses_display` script opens a connection to an Asterisk server, sets up a
+ChannelObserver and a CallObserver that subscribe to events via an
 EventListener. The observers maintain lists of current Channels and Calls. A
 curses loop renders a pretty list of these Channels and Calls.
 

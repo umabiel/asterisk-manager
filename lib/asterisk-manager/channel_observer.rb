@@ -1,11 +1,5 @@
 module AsteriskManager
   class ChannelObserver
-    attr_accessor :channels
-
-    def initialize(attributes = {})
-      self.channels = {}
-    end
-
     def subscribe(event_listener)
       event_listener.subscribe self, 'Newchannel', 'Newstate', 'Hangup'
     end
@@ -22,17 +16,18 @@ module AsteriskManager
     end
 
     def new_channel(event)
-      channels[event['Uniqueid']] = Channel.new unique_id: event['Uniqueid'],
-                                                sip_id:    event['Channel'],
-                                                state:     event['ChannelStateDesc']
+      channel        = Channel.for_unique_id(event['Uniqueid'])
+      channel.sip_id = event['Channel']
+      channel.state  = event['ChannelStateDesc']
     end
 
     def new_state(event)
-      channels[event['Uniqueid']].state = event['ChannelStateDesc']
+      channel        = Channel.for_unique_id(event['Uniqueid'])
+      channel.state  = event['ChannelStateDesc']
     end
 
     def hangup(event)
-      channels.delete event['Uniqueid']
+      Channel.channels.delete event['Uniqueid']
     end
   end
 end

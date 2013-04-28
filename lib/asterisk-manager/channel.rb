@@ -15,5 +15,13 @@ module AsteriskManager
     def age
       Time.now - created_at
     end
+
+    def self.channels
+      @channels ||= {}
+    end
+
+    def self.for_unique_id(unique_id)
+      channels[unique_id] ||= new(unique_id: unique_id)
+    end
   end
 end

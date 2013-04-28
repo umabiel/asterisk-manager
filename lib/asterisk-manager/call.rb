@@ -13,5 +13,13 @@ module AsteriskManager
     def age
       Time.now - created_at
     end
+
+    def self.calls
+      @calls ||= {}
+    end
+
+    def self.for_channel_1_and_channel_2(channel_1, channel_2)
+      calls[ [ channel_1, channel_2 ] ] ||= new(channel_1: channel_1, channel_2: channel_2)
+    end
   end
 end
